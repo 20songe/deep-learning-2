@@ -58,9 +58,10 @@ def histogram_equal(img_list):
 
 if __name__ == "__main__":
     X_train, Y_train, X_test, Y_test = preprocess_data()
-    with open('x_train.pickle', 'wb') as file:
+    with open('train.pickle', 'wb') as file:
         pickle.dump(X_train, file)
         pickle.dump(Y_train, file)
+    with open('test.pickle', 'wb') as file:
         pickle.dump(X_test, file)
         pickle.dump(Y_test, file)
     # print(X_test.shape)
