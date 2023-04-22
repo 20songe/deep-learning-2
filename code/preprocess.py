@@ -41,8 +41,8 @@ def preprocess_data():
     )
 
     # # histogram equalization to adjust contrast
-    # histogram_equal(X_train)
-    # histogram_equal(X_test)
+    X_train = histogram_equal(X_train)
+    X_test = histogram_equal(X_test)
 
     return (X_train, Y_train, X_test, Y_test)
         
