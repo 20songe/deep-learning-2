@@ -2,7 +2,7 @@ import numpy as np
 import tensorflow as tf
 import pickle 
 import cv2
-# import tensorflow_addons as tfa
+import tensorflow_addons as tfa
 from pathlib import Path
 
 def preprocess_data():
@@ -35,6 +35,10 @@ def preprocess_data():
         Y_train = label
 
     # Gaussian blurring
+    X_test = tfa.image.gaussian_filter2d(
+        X_test,
+        filter_shape = (5, 5),
+    )
 
     # # histogram equalization to adjust contrast
     # histogram_equal(X_train)
