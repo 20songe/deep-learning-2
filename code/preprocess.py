@@ -36,21 +36,25 @@ def preprocess_data():
 
     # Gaussian blurring
 
-    # histogram equalization to adjust contrast
-    histogram_equal(X_train)
-    histogram_equal(X_test)
+    # # histogram equalization to adjust contrast
+    # histogram_equal(X_train)
+    # histogram_equal(X_test)
+
     return (X_train, Y_train, X_test, Y_test)
         
 def histogram_equal(img_list):
-    img_list = img_list.numpy().astype(np.uint8)                                            
-    for img in img_list:
-        img = cv2.equalizeHist(img)
+    img_list = img_list.numpy().astype(np.uint8)    
+    new_img_list = np.zeros_like(img_list)                                     
+    for i, img in enumerate(img_list):
+        new_img_list[i] = tf.expand_dims(cv2.equalizeHist(img),-1)
+
+    return tf.convert_to_tensor(new_img_list)
 
 
 
 if __name__ == "__main__":
     X_train, Y_train, X_test, Y_test = preprocess_data()
-    print(X_test.shape)
-    print(Y_test.shape)
-    print(X_train.shape)
-    print(Y_train.shape)
+    # print(X_test.shape)
+    # print(Y_test.shape)
+    # print(X_train.shape)
+    # print(Y_train.shape)
