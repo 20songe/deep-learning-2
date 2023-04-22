@@ -1,6 +1,8 @@
 import numpy as np
 import tensorflow as tf
 import pickle 
+import cv2
+# import tensorflow_addons as tfa
 from pathlib import Path
 
 def preprocess_data():
@@ -32,9 +34,18 @@ def preprocess_data():
         X_train = image
         Y_train = label
 
-    
+    # Gaussian blurring
+
+    # histogram equalization to adjust contrast
+    histogram_equal(X_train)
+    histogram_equal(X_test)
     return (X_train, Y_train, X_test, Y_test)
         
+def histogram_equal(img_list):
+    img_list = img_list.numpy().astype(np.uint8)                                            
+    for img in img_list:
+        img = cv2.equalizeHist(img)
+
 
 
 if __name__ == "__main__":
