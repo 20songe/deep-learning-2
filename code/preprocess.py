@@ -15,13 +15,17 @@ def preprocess_data():
         path_test, 
         color_mode="grayscale",
         batch_size=10000,
-        shuffle=False)
+        shuffle=False,
+        image_size=(128, 128),
+    )
     
     train_dataset = tf.keras.utils.image_dataset_from_directory(
         path_train, 
         color_mode="grayscale",
         batch_size=10000,
-        shuffle=False)
+        shuffle=False,
+        image_size=(128, 128),
+    )
 
     X_test, Y_test, X_train, Y_train = ..., ..., ..., ...
 
