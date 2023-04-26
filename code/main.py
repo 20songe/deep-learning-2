@@ -23,14 +23,15 @@ def train(model, train_inputs, train_labels):
         input_batch = x[i * batch_size:(i+1)*batch_size,:]
         label_batch = y[i * batch_size:(i+1)*batch_size,:]
         # print(label_batch.shape)
+        # print("label_batch", label_batch)
 
         with tf.GradientTape() as tape:
-            logits = model(input_batch, is_training=True)
+            logits = model.call(input_batch, is_training=True)
             loss = model.loss(tf.reshape(label_batch,-1), logits)
             # print("log", logits.shape)
 
-        grads = tape.gradient(loss, model.trainable_variables)
-        model.optimizer.apply_gradients(zip(grads, model.trainable_variables))
+        grads = tape.gradient(loss, model.trainable_weights)
+        model.optimizer.apply_gradients(zip(grads, model.trainable_weights))
 
         loss_list.append(loss)
 
@@ -41,36 +42,37 @@ def train(model, train_inputs, train_labels):
 
 def test(model, test_inputs, test_labels):
     logits = model.call(test_inputs, is_training=False)
-    print(logits)
-    print(tf.argmax(logits, 1))
+    # print(logits)
+    # print(tf.argmax(logits, 1))
     return model.accuracy(logits, test_labels)
 
 if __name__ == "__main__":
     with open("train.pickle", "rb") as file:
-        X_train = tf.cast(pickle.load(file), dtype=tf.int32)
-        Y_train = tf.cast(pickle.load(file), dtype=tf.int32)
+        X_train = tf.cast(pickle.load(file), dtype=tf.float64)
+        Y_train = tf.cast(pickle.load(file), dtype=tf.int64)
 
     with open("test.pickle", "rb") as file:
-        X_test = tf.cast(pickle.load(file), dtype=tf.int32)
-        Y_test = tf.cast(pickle.load(file), dtype=tf.int32)
+        X_test = tf.cast(pickle.load(file), dtype=tf.float64)
+        Y_test = tf.cast(pickle.load(file), dtype=tf.int64)
     
     Y_train = tf.expand_dims(Y_train, 1)
     Y_test = tf.expand_dims(Y_test, 1)
 
     model = TumorClassifier()
-    model.compile(
-        optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
-        loss=tf.keras.losses.SparseCategoricalCrossentropy(),
-    )
+    # model.compile(
+    #     optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
+    #     loss=tf.keras.losses.SparseCategoricalCrossentropy(),
+    # )
     # model.build(X_test.shape)
     # print(model.summary())
 
     NUM_EPOCHS = 25
     
-    for _ in range(NUM_EPOCHS):
+    for i in range(NUM_EPOCHS):
         loss_list = train(model, X_train, Y_train)
         # print(loss_list)
         # train_acc = test(model, X_train, Y_train)
         test_acc = test(model, X_test, Y_test)
         # print("Training Accuracy: ", train_acc)
+        print("Epoch: ", i + 1)
         print("Test Accuracy: ", test_acc)
