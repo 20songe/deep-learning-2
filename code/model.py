@@ -16,6 +16,7 @@ class TumorClassifier(tf.keras.Model):
             filters=32,
             kernel_size=3,
             strides=1)
+        self.bn1 = tf.keras.layers.BatchNormalization()
         self.relu1 = tf.keras.layers.LeakyReLU()
         self.max_pool1 = tf.keras.layers.MaxPool2D()
         self.dropout1 = tf.keras.layers.Dropout(0.25)
@@ -23,6 +24,7 @@ class TumorClassifier(tf.keras.Model):
             filters=64,
             kernel_size=3,
             strides=1)
+        self.bn2 = tf.keras.layers.BatchNormalization()
         self.relu2 = tf.keras.layers.LeakyReLU()
         self.max_pool2 = tf.keras.layers.MaxPool2D()
         self.dropout2 = tf.keras.layers.Dropout(0.25)
@@ -30,6 +32,7 @@ class TumorClassifier(tf.keras.Model):
             filters=128,
             kernel_size=3,
             strides=1)
+        self.bn3 = tf.keras.layers.BatchNormalization()
         self.relu3 = tf.keras.layers.LeakyReLU()
         self.dropout3 = tf.keras.layers.Dropout(0.4)
         self.flatten = tf.keras.layers.Flatten()
@@ -40,16 +43,19 @@ class TumorClassifier(tf.keras.Model):
 
     def call(self, inputs, is_training=True):
         x = self.conv1(inputs)
+        x = self.bn1(x, training=is_training)
         x = self.relu1(x)
         x = self.max_pool1(x)
         if is_training:
             x = self.dropout1(x)
         x = self.conv2(x)
+        x = self.bn2(x, training=is_training)
         x = self.relu2(x)
         x = self.max_pool2(x)
         if is_training:
             x = self.dropout2(x)
         x = self.conv3(x)
+        x = self.bn3(x, training=is_training)
         x = self.relu3(x)
         if is_training:
             x = self.dropout3(x)

@@ -35,7 +35,7 @@ def train(model, train_inputs, train_labels):
 
         loss_list.append(loss)
 
-        pbar.set_description("Training loss for step %s: %.4f" % (int(i), float(loss)))
+        pbar.set_description("Training loss for Batch %s: %.4f" % (int(i), float(loss)))
         pbar.update()
     
     return loss_list
@@ -66,11 +66,14 @@ if __name__ == "__main__":
     # model.build(X_test.shape)
     # print(model.summary())
 
-    NUM_EPOCHS = 100
+    NUM_EPOCHS = 50
     
     for i in range(NUM_EPOCHS):
+        print("Epoch: ", i + 1)
         loss_list = train(model, X_train, Y_train)
         # print(loss_list)
-        test_acc = test(model, X_test, Y_test)
-        print("Epoch: ", i + 1)
+        test_acc = test(model, X_test, Y_test).numpy()
         print("Test Accuracy: ", test_acc)
+
+    # Saves Model Weights to h5 file
+    model.save_weights('model_weights.h5')
