@@ -7,6 +7,7 @@ from pathlib import Path
 
 def preprocess_data():
 
+    # collect datasets
     path_test = Path("../data/Testing")
     path_train = Path("../data/Training")
 
@@ -22,31 +23,27 @@ def preprocess_data():
         batch_size=10000,
         shuffle=False)
 
-    X_test = []
-    Y_test = []
-    X_train = []
-    Y_train = []
-    for image, label in test_dataset.take(1):
-        X_test = image
-        Y_test = label
+    X_test, Y_test, X_train, Y_train = ..., ..., ..., ...
 
-    for image, label in train_dataset.take(1):
-        X_train = image
-        Y_train = label
+    for _, (X_batch, Y_batch) in enumerate(test_dataset):
+        X_test = X_batch
+        Y_test = Y_batch
+    
+    for _, (X_batch, Y_batch) in enumerate(train_dataset):
+        X_train = X_batch
+        Y_train = Y_batch
 
-    # Gaussian blurring
-    X_test = tfa.image.gaussian_filter2d(
-        X_test,
-        filter_shape = (5, 5),
-    )
-
-    # # histogram equalization to adjust contrast
-    X_train = histogram_equal(X_train)
-    X_test = histogram_equal(X_test)
+    # gaussian blurring
+    X_test = tfa.image.gaussian_filter2d(X_test, filter_shape = (5, 5))
+    X_train = tfa.image.gaussian_filter2d(X_train, filter_shape = (5, 5))
+    
+    # histogram equalization to adjust contrast
+    X_train = histogram_equalizer(X_train)
+    X_test = histogram_equalizer(X_test)
 
     return (X_train, Y_train, X_test, Y_test)
         
-def histogram_equal(img_list):
+def histogram_equalizer(img_list):
     img_list = img_list.numpy().astype(np.uint8)    
     new_img_list = np.zeros_like(img_list)                                     
     for i, img in enumerate(img_list):
@@ -54,9 +51,8 @@ def histogram_equal(img_list):
 
     return tf.convert_to_tensor(new_img_list)
 
-
-
 if __name__ == "__main__":
+
     X_train, Y_train, X_test, Y_test = preprocess_data()
     with open('train.pickle', 'wb') as file:
         pickle.dump(X_train, file)
@@ -64,7 +60,9 @@ if __name__ == "__main__":
     with open('test.pickle', 'wb') as file:
         pickle.dump(X_test, file)
         pickle.dump(Y_test, file)
-    # print(X_test.shape)
-    # print(Y_test.shape)
-    # print(X_train.shape)
-    # print(Y_train.shape)
+
+    print(f"\n\n\t\t --- Pickling file!! --- \t\t\n\n")    
+    print(f"X_Test shape: {X_test.shape}")
+    print(f"Y_Test shape: {Y_test.shape}")
+    print(f"X_Train shape: {X_train.shape}")
+    print(f"Y_Train shape: {Y_train.shape}")
