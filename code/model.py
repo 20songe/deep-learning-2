@@ -8,14 +8,15 @@ class TumorClassifier(tf.keras.Model):
         super(TumorClassifier, self).__init__()
 
         self.num_classes = 4
-        self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
+        self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.00001)
+        # self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
 
         # layers of model
         self.conv1 = tf.keras.layers.Conv2D(
             filters=32,
             kernel_size=3,
             strides=1)
-        self.relu1 = tf.keras.layers.ReLU()
+        self.relu1 = tf.keras.layers.LeakyReLU()
         self.max_pool1 = tf.keras.layers.MaxPool2D()
         self.dropout1 = tf.keras.layers.Dropout(0.25)
         self.conv2 = tf.keras.layers.Conv2D(
@@ -29,7 +30,7 @@ class TumorClassifier(tf.keras.Model):
             filters=128,
             kernel_size=3,
             strides=1)
-        self.relu3 = tf.keras.layers.ReLU()
+        self.relu3 = tf.keras.layers.LeakyReLU()
         self.dropout3 = tf.keras.layers.Dropout(0.4)
         self.flatten = tf.keras.layers.Flatten()
         self.dense1 = tf.keras.layers.Dense(128)
@@ -99,9 +100,10 @@ class TumorClassifier(tf.keras.Model):
     #     return probs
 
     def accuracy(self, logits, y_true):
-        correct_predictions = tf.equal(tf.argmax(logits, 1), y_true)
+        correct_predictions = tf.math.equal(tf.argmax(logits, 1), y_true)
         return tf.reduce_mean(tf.cast(correct_predictions, tf.float64))
     
     def loss(self, y_true, probs):
-        loss = tf.keras.losses.SparseCategoricalCrossentropy()(y_true, probs)
-        return loss
+        losses = tf.keras.losses.SparseCategoricalCrossentropy()(y_true, probs)
+        avg_loss = tf.math.reduce_mean(losses)
+        return avg_loss

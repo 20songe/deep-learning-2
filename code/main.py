@@ -15,8 +15,8 @@ def train(model, train_inputs, train_labels):
     x = tf.gather(x, indices)
     y = tf.gather(train_labels, indices)
     
-    batch_size = 256
-    examples = len(x)
+    batch_size = 128
+    examples = x.shape[0]
 
     pbar = tqdm(total=examples // batch_size, position=0, leave=True, bar_format='{l_bar}{bar}| {n_fmt}/{total_fmt} ')
     for i in range(examples // batch_size):
@@ -43,7 +43,7 @@ def train(model, train_inputs, train_labels):
 def test(model, test_inputs, test_labels):
     logits = model.call(test_inputs, is_training=False)
     # print(logits)
-    print(tf.argmax(logits, 1))
+    # print(tf.argmax(logits, 1))
     return model.accuracy(logits, test_labels)
 
 if __name__ == "__main__":
@@ -71,8 +71,6 @@ if __name__ == "__main__":
     for i in range(NUM_EPOCHS):
         loss_list = train(model, X_train, Y_train)
         # print(loss_list)
-        # train_acc = test(model, X_train, Y_train)
         test_acc = test(model, X_test, Y_test)
-        # print("Training Accuracy: ", train_acc)
         print("Epoch: ", i + 1)
         print("Test Accuracy: ", test_acc)
