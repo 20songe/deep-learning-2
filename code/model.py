@@ -43,19 +43,22 @@ class TumorClassifier(tf.keras.Model):
 
     def call(self, inputs, is_training=True):
         x = self.conv1(inputs)
-        x = self.bn1(x, training=is_training)
+        if is_training:
+            x = self.bn1(x)
         x = self.relu1(x)
         x = self.max_pool1(x)
         if is_training:
             x = self.dropout1(x)
         x = self.conv2(x)
-        x = self.bn2(x, training=is_training)
+        if is_training:
+            x = self.bn2(x)
         x = self.relu2(x)
         x = self.max_pool2(x)
         if is_training:
             x = self.dropout2(x)
         x = self.conv3(x)
-        x = self.bn3(x, training=is_training)
+        if is_training:
+            x = self.bn3(x)
         x = self.relu3(x)
         if is_training:
             x = self.dropout3(x)

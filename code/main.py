@@ -66,7 +66,7 @@ if __name__ == "__main__":
     # model.build(X_test.shape)
     # print(model.summary())
 
-    NUM_EPOCHS = 50
+    NUM_EPOCHS = 5
     
     for i in range(NUM_EPOCHS):
         print("Epoch: ", i + 1)
