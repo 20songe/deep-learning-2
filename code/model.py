@@ -22,7 +22,7 @@ class TumorClassifier(tf.keras.Model):
             filters=64,
             kernel_size=3,
             strides=1)
-        self.relu2 = tf.keras.layers.ReLU()
+        self.relu2 = tf.keras.layers.LeakyReLU()
         self.max_pool2 = tf.keras.layers.MaxPool2D()
         self.dropout2 = tf.keras.layers.Dropout(0.25)
         self.conv3 = tf.keras.layers.Conv2D(

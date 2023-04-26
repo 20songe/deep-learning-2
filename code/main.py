@@ -43,7 +43,7 @@ def train(model, train_inputs, train_labels):
 def test(model, test_inputs, test_labels):
     logits = model.call(test_inputs, is_training=False)
     # print(logits)
-    # print(tf.argmax(logits, 1))
+    print(tf.argmax(logits, 1))
     return model.accuracy(logits, test_labels)
 
 if __name__ == "__main__":
@@ -66,7 +66,7 @@ if __name__ == "__main__":
     # model.build(X_test.shape)
     # print(model.summary())
 
-    NUM_EPOCHS = 25
+    NUM_EPOCHS = 100
     
     for i in range(NUM_EPOCHS):
         loss_list = train(model, X_train, Y_train)

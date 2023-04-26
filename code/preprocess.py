@@ -62,10 +62,10 @@ def histogram_equalizer(img_list):
 if __name__ == "__main__":
 
     X_train, Y_train, X_test, Y_test = preprocess_data()
-    print("X_train min", np.min(X_train))
-    print("Y_train min", np.min(Y_train))
-    print("X_train max", np.max(X_train))
-    print("Y_train max", np.max(Y_train))
+    print("X_train min", tf.math.reduce_min(X_train))
+    print("Y_train min", tf.math.reduce_min(Y_train))
+    print("X_train max", tf.math.reduce_max(X_train))
+    print("Y_train max", tf.math.reduce_max(Y_train))
     print(type(X_train))
     print(type(Y_train))
     print(type(X_test))
