@@ -8,7 +8,7 @@ class TumorClassifier(tf.keras.Model):
         super(TumorClassifier, self).__init__()
 
         self.num_classes = 4
-        self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.00001)
+        self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.0001)
         # self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
 
         # layers of model
@@ -100,8 +100,10 @@ class TumorClassifier(tf.keras.Model):
     #     return probs
 
     def accuracy(self, logits, y_true):
-        correct_predictions = tf.math.equal(tf.argmax(logits, 1), y_true)
-        return tf.reduce_mean(tf.cast(correct_predictions, tf.float64))
+        acc = tf.keras.metrics.SparseCategoricalAccuracy()
+        return acc(y_true, logits)
+        #correct_predictions = tf.math.equal(tf.argmax(logits, 1), y_true)
+        #return tf.reduce_mean(tf.cast(correct_predictions, tf.float64))
     
     def loss(self, y_true, probs):
         losses = tf.keras.losses.SparseCategoricalCrossentropy()(y_true, probs)
