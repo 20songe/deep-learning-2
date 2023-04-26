@@ -16,7 +16,7 @@ def preprocess_data():
         color_mode="grayscale",
         batch_size=10000,
         shuffle=False,
-        image_size=(128, 128),
+        image_size=(112, 112),
     )
     
     train_dataset = tf.keras.utils.image_dataset_from_directory(
@@ -24,7 +24,7 @@ def preprocess_data():
         color_mode="grayscale",
         batch_size=10000,
         shuffle=False,
-        image_size=(128, 128),
+        image_size=(112, 112),
     )
 
     X_test, Y_test, X_train, Y_train = ..., ..., ..., ...

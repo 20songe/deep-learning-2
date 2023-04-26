@@ -15,17 +15,19 @@ def train(model, train_inputs, train_labels):
     x = tf.gather(x, indices)
     y = tf.gather(train_labels, indices)
     
-    batch_size = 32
+    batch_size = 256
     examples = len(x)
 
     pbar = tqdm(total=examples // batch_size, position=0, leave=True, bar_format='{l_bar}{bar}| {n_fmt}/{total_fmt} ')
     for i in range(examples // batch_size):
         input_batch = x[i * batch_size:(i+1)*batch_size,:]
         label_batch = y[i * batch_size:(i+1)*batch_size,:]
+        # print(label_batch.shape)
 
         with tf.GradientTape() as tape:
             logits = model(input_batch, is_training=True)
-            loss = model.loss(label_batch, logits)
+            loss = model.loss(tf.reshape(label_batch,-1), logits)
+            # print("log", logits.shape)
 
         grads = tape.gradient(loss, model.trainable_variables)
         model.optimizer.apply_gradients(zip(grads, model.trainable_variables))
@@ -57,7 +59,7 @@ if __name__ == "__main__":
 
     model = TumorClassifier()
     model.compile(
-        optimizer=tf.keras.optimizers.SGD(learning_rate=1e-3),
+        optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
         loss=tf.keras.losses.SparseCategoricalCrossentropy(),
     )
     # model.build(X_test.shape)

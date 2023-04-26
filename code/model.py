@@ -67,10 +67,28 @@ class TumorClassifier(tf.keras.Model):
         self.basic.add(tf.keras.layers.Conv2D(
             filters=32,
             kernel_size=3,
-            strides=1,
-            activation='relu'))
+            strides=1))
+        self.basic.add(tf.keras.layers.ReLU())
+        self.basic.add(tf.keras.layers.MaxPool2D())
+        # self.basic.add(tf.keras.layers.Dropout(0.25))
+        self.basic.add(tf.keras.layers.Conv2D(
+            filters=64,
+            kernel_size=3,
+            strides=1
+        ))
+        self.basic.add(tf.keras.layers.ReLU())
+        self.basic.add(tf.keras.layers.MaxPool2D())
+        # self.basic.add(tf.keras.layers.Dropout(0.25))
+        self.basic.add(tf.keras.layers.Conv2D(
+            filters=128,
+            kernel_size=3,
+            strides=1
+        ))
+        self.basic.add(tf.keras.layers.ReLU())
         self.basic.add(tf.keras.layers.Flatten())
-        self.basic.add(tf.keras.layers.Dense(self.num_classes, activation="softmax"))
+        self.basic.add(tf.keras.layers.Dense(128))
+        self.basic.add(tf.keras.layers.Dense(self.num_classes))
+        self.basic.add(tf.keras.layers.Softmax())
 
     def call(self, inputs, is_training=True):
         x = tf.cast(inputs, dtype=tf.float32)
