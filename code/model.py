@@ -9,7 +9,6 @@ class TumorClassifier(tf.keras.Model):
 
         self.num_classes = 4
         self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.0001)
-        # self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
 
         # layers of model
         self.conv1 = tf.keras.layers.Conv2D(

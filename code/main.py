@@ -12,8 +12,8 @@ def train(model, train_inputs, train_labels):
     loss_list = []
 
     x = tf.image.random_flip_left_right(train_inputs, seed=42)
-    x = tf.image.random_flip_up_down(x, seed=42)
-    x = tf.image.random_contrast(x, 0.75, 1.25)
+    # x = tf.image.random_flip_up_down(x, seed=42)
+    # x = tf.image.random_contrast(x, 0.75, 1.25)
 
     indices = np.arange(len(x))
     indices = tf.random.shuffle(indices, seed=42)
@@ -72,7 +72,7 @@ if __name__ == "__main__":
     # model.build(X_test.shape)
     # print(model.summary())
 
-    NUM_EPOCHS = 250
+    NUM_EPOCHS = 100
     
     for i in range(NUM_EPOCHS):
         print("Epoch: ", i + 1)
