@@ -19,7 +19,7 @@ class TumorClassifier(tf.keras.Model):
         self.bn1 = tf.keras.layers.BatchNormalization()
         self.relu1 = tf.keras.layers.LeakyReLU()
         self.max_pool1 = tf.keras.layers.MaxPool2D()
-        self.dropout1 = tf.keras.layers.Dropout(0.25)
+        self.dropout1 = tf.keras.layers.Dropout(0.4)
         self.conv2 = tf.keras.layers.Conv2D(
             filters=64,
             kernel_size=3,
@@ -27,7 +27,7 @@ class TumorClassifier(tf.keras.Model):
         self.bn2 = tf.keras.layers.BatchNormalization()
         self.relu2 = tf.keras.layers.LeakyReLU()
         self.max_pool2 = tf.keras.layers.MaxPool2D()
-        self.dropout2 = tf.keras.layers.Dropout(0.25)
+        self.dropout2 = tf.keras.layers.Dropout(0.5)
         self.conv3 = tf.keras.layers.Conv2D(
             filters=128,
             kernel_size=3,

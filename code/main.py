@@ -3,15 +3,21 @@ import tensorflow as tf
 import numpy as np
 from tqdm import tqdm
 from model import TumorClassifier
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
+import matplotlib as plt
 
 def train(model, train_inputs, train_labels):
 
     loss_list = []
 
     x = tf.image.random_flip_left_right(train_inputs, seed=42)
+    x = tf.image.random_flip_up_down(x, seed=42)
+    x = tf.image.random_contrast(x, 0.75, 1.25)
 
     indices = np.arange(len(x))
     indices = tf.random.shuffle(indices, seed=42)
+
     x = tf.gather(x, indices)
     y = tf.gather(train_labels, indices)
     
@@ -66,7 +72,7 @@ if __name__ == "__main__":
     # model.build(X_test.shape)
     # print(model.summary())
 
-    NUM_EPOCHS = 100
+    NUM_EPOCHS = 250
     
     for i in range(NUM_EPOCHS):
         print("Epoch: ", i + 1)
@@ -77,3 +83,15 @@ if __name__ == "__main__":
 
     # Saves Model Weights to h5 file
     model.save_weights('model_weights.h5')
+
+    
+
+    # # Assuming predicted and true values are in arrays pred and true respectively
+    # confusion = confusion_matrix(Y_test, np.argmax(model(X_test, False),1))
+
+    # # Visualize the confusion matrix as a heatmap
+    # sns.heatmap(confusion, annot=True, fmt='d')
+    # plt.xlabel('Predicted')
+    # plt.ylabel('True')
+    # plt.show()
+    # plt.savefig("confusion_matrix.png")
