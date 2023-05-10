@@ -10,10 +10,14 @@ Convolutional neural networks are a deep learning architecture commonly used for
 
 
 `preprocess.py:` Used to preprocess original Kaggle Data
+
 `model.py:` Our CNN Model
+
 `main.py:`  Trains and Tests our Model
 
 `explore.ipynb:`     Used to generate confusion matrix and test our model
+
 `final_weights.h5:`  Model Weights for the final trained model
+
 `lime_explainer.py:` Generates images and content for LIME explainer
 
